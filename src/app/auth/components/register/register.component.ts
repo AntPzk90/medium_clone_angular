@@ -6,26 +6,58 @@ import {
   FormBuilder,
   ReactiveFormsModule,
 } from '@angular/forms'
-import {Store, StoreModule} from '@ngrx/store'
+import {select, Store, StoreModule} from '@ngrx/store'
+import {AsyncPipe, CommonModule} from '@angular/common'
+import {Observable} from 'rxjs'
+
 import {registerAction} from '../../store/actions/register.action'
+import {
+  isSubmittingSelector,
+  validationErrorSelector,
+} from '../../store/selectors'
+import {RegisterEffect} from '../../store/effects/register.effect'
+
+import {AuthService} from '../../services/auth.service'
+import {PersistenceService} from '../../../shared/services/persistence.service'
+
+import {RegisterRequestInterface} from '../../types/registerRequest.interface'
+import {BackendErrorsInterface} from '../../../shared/types/backendErrors.interface'
+
+import {BackendErrorMessagesComponent} from '../../../shared/components/backend-error-messages/backend-error-messages.component'
 
 @Component({
   selector: 'mc-register',
   standalone: true,
-  imports: [ReactiveFormsModule, StoreModule, RouterLink],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterLink,
+    AsyncPipe,
+    BackendErrorMessagesComponent,
+  ],
+  providers: [AuthService, RegisterEffect, PersistenceService],
   templateUrl: './register.component.html',
-  styleUrl: './register.component.scss',
+  styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements OnInit {
   form: FormGroup
+  isSubmitting$: Observable<boolean>
+  backendErrors$: Observable<BackendErrorsInterface | null>
 
   constructor(
     private fb: FormBuilder,
     private store: Store,
+    private authService: AuthService,
   ) {}
 
   ngOnInit(): void {
     this.initializeForm()
+    this.initializeValues()
+  }
+
+  initializeValues(): void {
+    this.isSubmitting$ = this.store.pipe(select(isSubmittingSelector))
+    this.backendErrors$ = this.store.pipe(select(validationErrorSelector))
   }
 
   initializeForm(): void {
@@ -37,6 +69,9 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.store.dispatch(registerAction(this.form.value))
+    const request: RegisterRequestInterface = {
+      user: this.form.value,
+    }
+    this.store.dispatch(registerAction({request}))
   }
 }

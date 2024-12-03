@@ -5,11 +5,20 @@ import {provideStoreDevtools} from '@ngrx/store-devtools'
 
 import {routes} from './app.routes'
 import {authReducer} from './auth/store/reducers'
+import {provideEffects} from '@ngrx/effects'
+import {RegisterEffect} from './auth/store/effects/register.effect'
+import {AuthService} from './auth/services/auth.service'
+import {provideHttpClient} from '@angular/common/http'
+import {PersistenceService} from './shared/services/persistence.service'
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideStore({auth: authReducer}), // Базовое хранилище
     provideStoreDevtools({maxAge: 25, logOnly: !isDevMode()}),
+    provideEffects(RegisterEffect),
+    provideHttpClient(),
+    AuthService,
+    PersistenceService,
   ],
 }
