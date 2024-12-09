@@ -6,11 +6,10 @@ import {
   FormBuilder,
   ReactiveFormsModule,
 } from '@angular/forms'
-import {select, Store, StoreModule} from '@ngrx/store'
+import {select, Store} from '@ngrx/store'
 import {AsyncPipe, CommonModule} from '@angular/common'
 import {Observable} from 'rxjs'
 
-import {registerAction} from '../../store/actions/register.action'
 import {
   isSubmittingSelector,
   validationErrorSelector,
@@ -19,13 +18,11 @@ import {RegisterEffect} from '../../store/effects/register.effect'
 
 import {AuthService} from '../../services/auth.service'
 import {PersistenceService} from '../../../shared/services/persistence.service'
-
-import {RegisterRequestInterface} from '../../types/registerRequest.interface'
 import {BackendErrorsInterface} from '../../../shared/types/backendErrors.interface'
-
 import {BackendErrorMessagesComponent} from '../../../shared/components/backend-error-messages/backend-error-messages.component'
 import {LoginEffect} from '../../store/effects/login.effect'
 import {loginAction} from '../../store/actions/login.action'
+import {LoginRequestInterface} from '../../types/loginRequest.interface'
 
 @Component({
   selector: 'mc-register',
@@ -38,10 +35,10 @@ import {loginAction} from '../../store/actions/login.action'
     BackendErrorMessagesComponent,
   ],
   providers: [AuthService, RegisterEffect, LoginEffect, PersistenceService],
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss'],
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
 })
-export class RegisterComponent implements OnInit {
+export class LoginComponent implements OnInit {
   form: FormGroup
   isSubmitting$: Observable<boolean>
   backendErrors$: Observable<BackendErrorsInterface | null>
@@ -49,7 +46,6 @@ export class RegisterComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private store: Store,
-    private authService: AuthService,
   ) {}
 
   ngOnInit(): void {
@@ -64,16 +60,15 @@ export class RegisterComponent implements OnInit {
 
   initializeForm(): void {
     this.form = this.fb.group({
-      username: ['', Validators.required],
       email: ['', Validators.required],
       password: ['', Validators.required],
     })
   }
 
   onSubmit(): void {
-    const request: RegisterRequestInterface = {
+    const request: LoginRequestInterface = {
       user: this.form.value,
     }
-    this.store.dispatch(registerAction({request}))
+    this.store.dispatch(loginAction({request}))
   }
 }

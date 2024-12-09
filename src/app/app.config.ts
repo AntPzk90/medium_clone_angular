@@ -10,13 +10,14 @@ import {RegisterEffect} from './auth/store/effects/register.effect'
 import {AuthService} from './auth/services/auth.service'
 import {provideHttpClient} from '@angular/common/http'
 import {PersistenceService} from './shared/services/persistence.service'
+import {LoginEffect} from './auth/store/effects/login.effect'
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideStore({auth: authReducer}), // Базовое хранилище
     provideStoreDevtools({maxAge: 25, logOnly: !isDevMode()}),
-    provideEffects(RegisterEffect),
+    provideEffects(RegisterEffect, LoginEffect),
     provideHttpClient(),
     AuthService,
     PersistenceService,
