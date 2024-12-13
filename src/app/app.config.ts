@@ -13,13 +13,20 @@ import {PersistenceService} from './shared/services/persistence.service'
 import {LoginEffect} from './auth/store/effects/login.effect'
 import {GetCurrentUserEffect} from './auth/store/effects/getCurrentUser.effect'
 import {AuthInterceptor} from './shared/services/authInterceptors.service'
+import {GetFeedEffect} from './global-feed/store/effects/getFeed.effect'
+import {feedReducer} from './global-feed/store/reducers'
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideStore({auth: authReducer}), // Базовое хранилище
+    provideStore({auth: authReducer, feed: feedReducer}), // Базовое хранилище
     provideStoreDevtools({maxAge: 25, logOnly: !isDevMode()}),
-    provideEffects(RegisterEffect, LoginEffect, GetCurrentUserEffect),
+    provideEffects(
+      RegisterEffect,
+      LoginEffect,
+      GetCurrentUserEffect,
+      GetFeedEffect,
+    ),
     provideHttpClient(),
     AuthService,
     PersistenceService,
