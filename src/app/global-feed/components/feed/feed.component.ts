@@ -21,6 +21,7 @@ import {ErrorMessageComponent} from '../../../shared/components/error-message/er
 import {LoaderComponent} from '../../../shared/components/loader/loader.component'
 import {PaginationComponent} from '../../../shared/components/pagination/pagination.component'
 import {TagListComponent} from '../../../shared/components/tag-list/tag-list.component'
+import {PopularTagsComponent} from '../../../tags/components/popular-tags/popular-tags.component'
 
 @Component({
   selector: 'mc-global-feed',
@@ -33,6 +34,7 @@ import {TagListComponent} from '../../../shared/components/tag-list/tag-list.com
     LoaderComponent,
     PaginationComponent,
     TagListComponent,
+    PopularTagsComponent,
   ],
   templateUrl: './feed.component.html',
   styleUrl: './feed.component.scss',

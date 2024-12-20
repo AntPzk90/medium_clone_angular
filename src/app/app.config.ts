@@ -16,22 +16,31 @@ import {AuthInterceptor} from './shared/services/authInterceptors.service'
 import {GetFeedEffect} from './global-feed/store/effects/getFeed.effect'
 import {feedReducer} from './global-feed/store/reducers'
 import {UtilsService} from './shared/services/utils.service'
+import {GetPopularTagsEffect} from './tags/store/effects/popularTags.effect'
+import {PopularTagsService} from './tags/services/popularTags.service'
+import {popularTagsReducer} from './tags/reducers'
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideStore({auth: authReducer, feed: feedReducer}), // Базовое хранилище
+    provideStore({
+      auth: authReducer,
+      feed: feedReducer,
+      tags: popularTagsReducer,
+    }), // Базовое хранилище
     provideStoreDevtools({maxAge: 25, logOnly: !isDevMode()}),
     provideEffects(
       RegisterEffect,
       LoginEffect,
       GetCurrentUserEffect,
       GetFeedEffect,
+      GetPopularTagsEffect,
     ),
     provideHttpClient(),
     AuthService,
     PersistenceService,
     UtilsService,
+    PopularTagsService,
     provideHttpClient(withInterceptors([AuthInterceptor])),
   ],
 }
