@@ -15,6 +15,7 @@ import {GetCurrentUserEffect} from './auth/store/effects/getCurrentUser.effect'
 import {AuthInterceptor} from './shared/services/authInterceptors.service'
 import {GetFeedEffect} from './global-feed/store/effects/getFeed.effect'
 import {feedReducer} from './global-feed/store/reducers'
+import {UtilsService} from './shared/services/utils.service'
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -30,6 +31,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     AuthService,
     PersistenceService,
+    UtilsService,
     provideHttpClient(withInterceptors([AuthInterceptor])),
   ],
 }

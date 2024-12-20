@@ -1,15 +1,12 @@
 <div class="home-page">
-  BANNER
+  <mc-banner></mc-banner>
   <div class="container page">
     <div class="row">
       <div class="col-md-9">
         FEED TOGGLER
-
         <!--feed inner-->
-        <div *ngIf="isLoading$ | async">Loading...</div>
-
-        <div *ngIf="error$ | async">Some error happened...</div>
-
+        <mc-loader *ngIf="isLoading$ | async"></mc-loader>
+        <mc-error-message *ngIf="error$ | async"></mc-error-message>
         <div *ngIf="feed$ | async">
           <div
             class="article-preview"
@@ -34,13 +31,20 @@
               <h1>{{ article.title }}</h1>
               <p>{{ article.description }}</p>
               <span>Read more..</span>
-              HERE LIST OF TAGS
+              <mc-tag-list [tags]="article.tagList"></mc-tag-list>
             </a>
           </div>
-          PAGINATION
+          <mc-pagination
+            [total]="(feed$ | async)?.articlesCount"
+            [limit]="limit"
+            [url]="baseUrl"
+            [currentPage]="currentPage"
+          ></mc-pagination>
         </div>
       </div>
-      <div class="col-md-3">POPULAR TAGS</div>
+      <div class="col-md-3">
+        <mc-tag-list [tags]="['first tag','second tag']"></mc-tag-list>
+      </div>
     </div>
   </div>
 </div>

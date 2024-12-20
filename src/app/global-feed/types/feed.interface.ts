@@ -2,5 +2,8 @@ import {ArticleInterface} from '../../shared/types/article.interface'
 
 export interface FeedInterface {
   articles: ArticleInterface[]
-  articleCount: number
+  articlesCount: number
+  popularTags?: PopularTagsType
 }
+
+export type PopularTagsType = string[] | null | string
