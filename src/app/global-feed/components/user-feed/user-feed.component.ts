@@ -25,7 +25,7 @@ import {PopularTagsComponent} from '../../../tags/components/popular-tags/popula
 import {FeedTogglerComponent} from '../feed-toggler/feed-toggler.component'
 
 @Component({
-  selector: 'mc-global-feed',
+  selector: 'mc-user-feed',
   standalone: true,
   imports: [
     CommonModule,
@@ -38,11 +38,12 @@ import {FeedTogglerComponent} from '../feed-toggler/feed-toggler.component'
     PopularTagsComponent,
     FeedTogglerComponent,
   ],
-  templateUrl: './feed.component.html',
-  styleUrl: './feed.component.scss',
+  templateUrl: './user-feed.component.html',
+  styleUrl: './user-feed.component.scss',
 })
-export class FeedComponent implements OnInit, OnDestroy {
-  @Input('apiUrl') apiUrlProps: string = 'http://localhost:3000/api/articles'
+export class UserFeedComponent implements OnInit, OnDestroy {
+  @Input('apiUrl') apiUrlProps: string =
+    'http://localhost:3000/api/articles/feed'
 
   isLoading$: Observable<boolean>
   error$: Observable<string | null>
@@ -61,7 +62,6 @@ export class FeedComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initializeValues()
     this.initializeListeners()
-    console.log(this.router)
   }
 
   ngOnDestroy(): void {
